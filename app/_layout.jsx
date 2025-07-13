@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
 import { Slot, useRouter, useSegments } from "expo-router";
-import "../global.css";
+import { useEffect } from "react";
+// import "../global.css";
 import { AuthContextProvider, useAuth } from "../firebase/authContext";
+import "../global.css";
 
 const MainLayout = () => {
     const { isAuthenticated } = useAuth();

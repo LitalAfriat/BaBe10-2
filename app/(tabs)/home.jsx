@@ -1,11 +1,11 @@
-import { View, Text } from "react-native";
-import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { getDocs, collection } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-import Slider from "../../components/home/popularSandwiches";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Text, View } from "react-native";
 import Categories from "../../components/home/Categories";
 import News from "../../components/home/News";
+import Slider from "../../components/home/popularSandwiches";
+import { db } from "../../firebase/firebaseConfig";
 
 export default function Home() {
     const [sliderList, setSliderList] = useState([]);
@@ -39,23 +39,26 @@ export default function Home() {
     };
 
     return (
-        <View className=' py-8 px-6  bg-white flex-1 '>
-            <StatusBar style='dark' />
+        <View className=" py-8 px-6  bg-white flex-1 ">
+            <StatusBar style="dark" />
             <View>
                 <Categories />
             </View>
 
             <View
-                className='itame-center  justify-centerr  py-8 flex-1'
-                style={{ top: -20 }}>
+                className="itame-center  justify-centerr  py-8 flex-1 
+"
+                style={{ top: -20 }}
+            >
                 <Text
-                    className='font-semibold'
+                    className="font-semibold"
                     style={{
                         textAlign: "right",
                         color: "#000000",
                         fontSize: 20,
                         top: 25,
-                    }}>
+                    }}
+                >
                     הודעות
                 </Text>
 
@@ -63,17 +66,19 @@ export default function Home() {
             </View>
 
             <View
-                className='itame-center  justify-centerr py-8 flex-1  '
-                style={{ top: 2 }}>
+                className="itame-center  justify-centerr py-8 flex-1  "
+                style={{ top: 2 }}
+            >
                 <Text
-                    className='font-semibold	'
+                    className="font-semibold	"
                     style={{
                         color: "#000000",
                         textAlign: "right",
                         alignItems: "center",
                         fontSize: 20,
                         textBold: 5,
-                    }}>
+                    }}
+                >
                     הפופולריים
                 </Text>
                 {/* Slider */}
