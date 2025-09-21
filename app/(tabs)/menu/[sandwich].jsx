@@ -1,37 +1,37 @@
-import {
-    View,
-    Text,
-    Image,
-    ScrollView,
-    Pressable,
-    FlatList,
-    Dimensions,
-    Platform,
-    TouchableOpacity,
-} from "react-native";
-import { StatusBar } from "expo-status-bar";
-import ArrowBack from "../../../components/ArrowBack";
-import React, { useState, useCallback, useEffect, useContext } from "react";
-import HorizontalLine from "../../../components/HorizontalLine";
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import Checkbox from "expo-checkbox";
-import { useLocalSearchParams, useFocusEffect, router } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { db, auth } from "../../../firebase/firebaseConfig";
+import Checkbox from "expo-checkbox";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import {
-    getDocs,
     collection,
-    getDoc,
     doc,
+    documentId,
+    getDoc,
+    getDocs,
     query,
     where,
-    documentId,
 } from "firebase/firestore";
+import { useCallback, useContext, useEffect, useState } from "react";
+import {
+    Dimensions,
+    FlatList,
+    Image,
+    Platform,
+    Pressable,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import Modal from "react-native-modal";
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import ArrowBack from "../../../components/ArrowBack";
 import { CartContext } from "../../../components/cart/cartContext";
+import HorizontalLine from "../../../components/HorizontalLine";
+import { auth, db } from "../../../firebase/firebaseConfig";
 
 ///////////////////////////////////////////////////////
 export default function Sandwich() {
@@ -180,14 +180,18 @@ export default function Sandwich() {
     };
 
     return (
-        <View className='flex-1 bg-white'>
-            <StatusBar style='dark' />
+        <View
+            className="flex-1 bg-white"
+            style={{ flex: 1, backgroundColor: "white" }}
+        >
+            <StatusBar style="dark" />
             <ArrowBack backScreen={returnPage} />
 
             <ScrollView>
                 <View
-                    className='justify-center items-center z-10'
-                    style={{ marginTop: hp(10) }}>
+                    className="justify-center items-center z-10"
+                    style={{ marginTop: hp(10) }}
+                >
                     <View style={{ alignItems: "center" }}>
                         <Image
                             source={{ uri: pictureRef }}
@@ -211,7 +215,8 @@ export default function Sandwich() {
                                 fontSize: 25,
                                 top: 5,
                                 padding: 7,
-                            }}>
+                            }}
+                        >
                             {nameRef}
                         </Text>
                         <Text
@@ -220,7 +225,8 @@ export default function Sandwich() {
                                 textAlign: "right",
                                 fontSize: 22,
                                 padding: 7,
-                            }}>
+                            }}
+                        >
                             ₪{priceRef}
                         </Text>
                         <Text
@@ -230,35 +236,39 @@ export default function Sandwich() {
                                 alignItems: "center",
                                 fontSize: 20,
                                 padding: 7,
-                            }}>
+                            }}
+                        >
                             {descriptionRef}
                         </Text>
-                        <View className='pb-6'>
+                        <View className="pb-6">
                             <HorizontalLine />
                         </View>
                     </View>
                 </View>
 
-                <View className='mt-2' style={{ marginBottom: hp(6.5) }}>
+                <View className="mt-2" style={{ marginBottom: hp(6.5) }}>
                     <Text
                         style={{
                             color: "black",
                             textAlign: "right",
                             fontSize: hp(2.7),
                             paddingRight: wp(9),
+                            padding: wp(2),
                         }}
-                        className='pb-4'>
+                        className="pb-4"
+                    >
                         בחרו שינויים
                     </Text>
 
                     {ingredientsRef.map((ingredient, index) => (
                         <View
-                            className='flex flex-row-reverse'
+                            className=" flex lex flex-row"
                             key={index}
                             style={{
-                                padding: 9,
-                                paddingRight: wp(9),
-                            }}>
+                                padding: wp(2),
+                                right: wp(-75),
+                            }}
+                        >
                             <View>
                                 <Checkbox
                                     style={{
@@ -274,10 +284,16 @@ export default function Sandwich() {
                                     color={"#61B331"}
                                 />
                             </View>
-                            <View>
+                            <View
+                                style={{
+                                    padding: wp(2),
+                                    right: wp(35),
+                                }}
+                            >
                                 <Text
-                                    className='text-neutral-700 pr-4'
-                                    style={{ fontSize: 20 }}>
+                                    className="text-neutral-700 pr-4"
+                                    style={{ fontSize: 20 }}
+                                >
                                     {"ללא " + ingredient + "."}
                                 </Text>
                             </View>
@@ -286,7 +302,7 @@ export default function Sandwich() {
                 </View>
             </ScrollView>
 
-            <View className='absolute left-10' style={{ top: hp(82) }}>
+            <View className="absolute left-10" style={{ top: hp(82) }}>
                 <TouchableOpacity
                     onPress={() => {
                         setModalVisible(true);
@@ -300,7 +316,8 @@ export default function Sandwich() {
                         shadowRadius: 4,
                         shadowOpacity: 0.3,
                         shadowOffset: { width: 0, height: 5 },
-                    }}>
+                    }}
+                >
                     <Text
                         style={{
                             flex: 1,
@@ -308,7 +325,8 @@ export default function Sandwich() {
                             textAlign: "center",
                             margin: 5,
                         }}
-                        className='text-white rounded-xl p-2 '>
+                        className="text-white rounded-xl p-2 "
+                    >
                         הוסף
                     </Text>
                 </TouchableOpacity>
@@ -320,19 +338,22 @@ export default function Sandwich() {
                 deviceHeight={deviceHeight}
                 coverScreen={true}
                 onBackdropPress={() => setModalVisible(false)}
-                style={{ flex: 1, justifyContent: "flex-end", margin: 0 }}>
+                style={{ flex: 1, justifyContent: "flex-end", margin: 0 }}
+            >
                 <View
                     style={{
                         height: deviceHeight / 2,
                         borderRadius: 20,
                         backgroundColor: "white",
-                    }}>
+                    }}
+                >
                     <Pressable
                         style={{
                             alignItems: "flex-end",
                             justifyContent: "flex-end",
                         }}
-                        onPress={() => setModalVisible(!modalVisible)}>
+                        onPress={() => setModalVisible(!modalVisible)}
+                    >
                         <Image
                             style={{ width: 70, height: 70 }}
                             source={require("../../../assets/images/backX.png")}
@@ -344,7 +365,8 @@ export default function Sandwich() {
                             color: "#61B331",
                             fontSize: 26,
                             textAlign: "center",
-                        }}>
+                        }}
+                    >
                         בחר ילד/ה
                     </Text>
 
@@ -357,7 +379,7 @@ export default function Sandwich() {
                             style={{ paddingRight: 8 }}
                             renderItem={({ item }) => (
                                 <View
-                                    className='flex justify-between'
+                                    className="flex justify-between"
                                     style={{
                                         margin: 8,
                                         marginTop: hp(2),
@@ -375,13 +397,15 @@ export default function Sandwich() {
                                         flexDirection: "row",
                                         textAlign: "right",
                                         paddingTop: hp(1.5),
-                                    }}>
+                                    }}
+                                >
                                     <View
                                         style={{
                                             flexDirection: "row",
                                             paddingLeft: wp(2),
                                             top: -2,
-                                        }}>
+                                        }}
+                                    >
                                         <Pressable
                                             onPress={() => {
                                                 setDishCounts((prevCounts) => ({
@@ -393,11 +417,12 @@ export default function Sandwich() {
                                                     ),
                                                 }));
                                             }}
-                                            style={{ marginRight: 15 }}>
+                                            style={{ marginRight: 15 }}
+                                        >
                                             <AntDesign
-                                                name='minuscircleo'
+                                                name="minuscircleo"
                                                 size={24}
-                                                color='#61B331'
+                                                color="#61B331"
                                             />
                                         </Pressable>
                                         <View>
@@ -415,11 +440,12 @@ export default function Sandwich() {
                                                             0) + 1,
                                                 }));
                                             }}
-                                            style={{ marginLeft: 15 }}>
+                                            style={{ marginLeft: 15 }}
+                                        >
                                             <AntDesign
-                                                name='pluscircleo'
+                                                name="pluscircleo"
                                                 size={24}
-                                                color='#61B331'
+                                                color="#61B331"
                                             />
                                         </Pressable>
                                     </View>
@@ -430,7 +456,8 @@ export default function Sandwich() {
                                                 textAlign: "right",
                                                 paddingRight: 30,
                                                 fontSize: hp(1.8),
-                                            }}>
+                                            }}
+                                        >
                                             {item[1]?.name +
                                                 " " +
                                                 item[1]?.lastName}
@@ -446,7 +473,8 @@ export default function Sandwich() {
                             paddingLeft: wp(12),
                             flexDirection: "row",
                             position: "absolute",
-                        }}>
+                        }}
+                    >
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
@@ -465,7 +493,8 @@ export default function Sandwich() {
                                         height: 5,
                                     },
                                     top: hp(1.5),
-                                }}>
+                                }}
+                            >
                                 <Text
                                     style={{
                                         flex: 1,
@@ -473,13 +502,15 @@ export default function Sandwich() {
                                         textAlign: "center",
                                         margin: 5,
                                     }}
-                                    className='text-white rounded-xl p-2 '>
+                                    className="text-white rounded-xl p-2 "
+                                >
                                     הוסף לסל
                                 </Text>
                             </TouchableOpacity>
                         </View>
                         <View
-                            style={{ paddingTop: hp(3), paddingLeft: wp(17) }}>
+                            style={{ paddingTop: hp(3), paddingLeft: wp(17) }}
+                        >
                             <Text style={{ fontSize: 20, color: "#61B331" }}>
                                 ₪{totalPrice}{" "}
                             </Text>

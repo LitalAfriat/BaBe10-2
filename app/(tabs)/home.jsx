@@ -39,7 +39,10 @@ export default function Home() {
     };
 
     return (
-        <View className=" py-8 px-6  bg-white flex-1 ">
+        <View
+            className=" py-8 px-6  bg-white flex-1 "
+            style={{ flex: 1, backgroundColor: "white" }}
+        >
             <StatusBar style="dark" />
             <View>
                 <Categories />

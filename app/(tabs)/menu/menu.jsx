@@ -1,17 +1,17 @@
-import { View, Text, FlatListComponent } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import { useLocalSearchParams } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
+import { Text, View } from "react-native";
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import LoadingPage from "../../../components/LoadingPage";
 import Search from "../../../components/menu/Search";
 import SliderFilter from "../../../components/menu/SliderFilter";
-import { app } from "../../../firebase/firebaseConfig";
-import { getDocs, collection, getFirestore } from "firebase/firestore";
-import LoadingPage from "../../../components/LoadingPage";
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { StatusBar } from "expo-status-bar";
 import SliderMenu from "../../../components/menu/SliderMenu";
-import { useLocalSearchParams } from "expo-router";
+import { app } from "../../../firebase/firebaseConfig";
 
 export default function Menu() {
     const { source } = useLocalSearchParams();
@@ -31,8 +31,7 @@ export default function Menu() {
             focusRef.current.focus();
         }
     };
-    focusSearch()
-
+    focusSearch();
 
     function applyFilters({ search: value, tags: tags }) {
         if (tags === "הכל") {
@@ -92,10 +91,13 @@ export default function Menu() {
     }
 
     return (
-        <View className='flex-1 bg-white '>
-            <StatusBar style='dark' />
+        <View
+            className="flex-1 bg-white "
+            style={{ flex: 1, backgroundColor: "white" }}
+        >
+            <StatusBar style="dark" />
             {loading ? (
-                <View className='items-center top-2/4'>
+                <View className="items-center top-2/4">
                     <LoadingPage size={hp(10)} />
                 </View>
             ) : (
@@ -127,14 +129,16 @@ export default function Menu() {
                             top: hp(18),
                             height: hp(55),
                             marginRight: wp(5),
-                        }}>
+                        }}
+                    >
                         <Text
                             style={{
                                 fontSize: 26,
                                 padding: 17,
                                 color: "#61B331",
                                 textAlign: "right",
-                            }}>
+                            }}
+                        >
                             תפריט
                         </Text>
                         <View tyle={{ top: hp(25) }}>

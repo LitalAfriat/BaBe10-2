@@ -4,11 +4,10 @@
     "slug": "BaBe10",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "BaBe10",
+    "icon": "./assets/images/splash.png",
+    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    
     "ios": {
       "supportsTablet": true
     },
@@ -31,7 +30,7 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash.png",
-          "resizeMode": "contain",
+          "resizeMode": "stretch",
           "imageWidth": 200,
           "backgroundColor": "#000000",
           "dark": {
@@ -39,8 +38,10 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
-   ],
+      ],
+      "expo-asset",
+      "expo-web-browser"
+    ],
     "experiments": {
       "typedRoutes": true
     }

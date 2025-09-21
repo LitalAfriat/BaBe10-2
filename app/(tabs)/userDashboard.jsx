@@ -1,21 +1,18 @@
-import {
-    View,
-    Text,
-    StatusBar,
-    TouchableOpacity,
-    Pressable,
-} from "react-native";
-import React, { useState } from "react";
-import { useAuth } from "../../firebase/authContext";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { router } from "expo-router";
+import { useState } from "react";
+import {
+    Pressable,
+    StatusBar,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import { useAuth } from "../../firebase/authContext";
 
 import TermsModal from "../../components/TermsModal";
 
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default function UserDashboard() {
     const { logout, user } = useAuth();
@@ -28,8 +25,11 @@ export default function UserDashboard() {
     console.log("user data: ", user);
 
     return (
-        <View className='gap-12 bg-white flex-1 '>
-            <StatusBar style='dark' />
+        <View
+            className="gap-12 bg-white flex-1 "
+            style={{ flex: 1, backgroundColor: "white" }}
+        >
+            <StatusBar style="dark" />
 
             <Text
                 style={{
@@ -38,7 +38,8 @@ export default function UserDashboard() {
                     color: "#61B331",
                     textAlign: "center",
                     top: hp(12),
-                }}>
+                }}
+            >
                 אזור אישי
             </Text>
 
@@ -48,18 +49,20 @@ export default function UserDashboard() {
                     top: hp(8),
                     alignItems: "center",
                     justifyContent: "center",
-                }}>
-                <FontAwesome name='user-circle-o' size={100} color='gray' />
+                }}
+            >
+                <FontAwesome name="user-circle-o" size={100} color="gray" />
             </View>
 
-            <View className='justify-center items-center ' style={{ top: 60 }}>
+            <View className="justify-center items-center " style={{ top: 60 }}>
                 <Text
                     style={{
                         top: hp(1),
                         alignItems: "center",
                         justifyContent: "center",
                         fontSize: hp(2.4),
-                    }}>
+                    }}
+                >
                     {user.fullName}
                 </Text>
                 <Text
@@ -68,7 +71,8 @@ export default function UserDashboard() {
                         alignItems: "center",
                         justifyContent: "center",
                         fontSize: hp(2.4),
-                    }}>
+                    }}
+                >
                     {user.phoneNumber}
                 </Text>
 
@@ -85,12 +89,14 @@ export default function UserDashboard() {
                         shadowOpacity: 0.3,
                         shadowOffset: { width: 0, height: 5 },
                         top: hp(9),
-                    }}>
+                    }}
+                >
                     <Text
                         style={{
                             fontSize: hp(2.4),
                         }}
-                        className='text-white text-center'>
+                        className="text-white text-center"
+                    >
                         עדכון פרטים
                     </Text>
                 </TouchableOpacity>
@@ -108,12 +114,14 @@ export default function UserDashboard() {
                         shadowOpacity: 0.3,
                         shadowOffset: { width: 0, height: 5 },
                         top: hp(15),
-                    }}>
+                    }}
+                >
                     <Text
                         style={{
                             fontSize: hp(2.4),
                         }}
-                        className='text-white text-center'>
+                        className="text-white text-center"
+                    >
                         ניתוק
                     </Text>
                 </TouchableOpacity>
@@ -126,7 +134,8 @@ export default function UserDashboard() {
                 <Pressable onPress={() => setModalVisible(true)}>
                     <Text
                         style={{ fontSize: hp(1.8), top: hp(19) }}
-                        className='underline underline-offset-1'>
+                        className="underline underline-offset-1"
+                    >
                         תנאים כלליים/ניהול איסוף המידע
                     </Text>
                 </Pressable>
