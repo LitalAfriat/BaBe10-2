@@ -37,7 +37,7 @@ export default function UserDashboard() {
                     padding: 11,
                     color: "#61B331",
                     textAlign: "center",
-                    top: hp(12),
+                    top: hp(9),
                 }}
             >
                 אזור אישי
@@ -94,6 +94,8 @@ export default function UserDashboard() {
                     <Text
                         style={{
                             fontSize: hp(2.4),
+
+                            textAlign: "center",
                         }}
                         className="text-white text-center"
                     >
@@ -119,6 +121,7 @@ export default function UserDashboard() {
                     <Text
                         style={{
                             fontSize: hp(2.4),
+                            textAlign: "center",
                         }}
                         className="text-white text-center"
                     >
