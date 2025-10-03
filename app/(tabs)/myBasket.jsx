@@ -1,31 +1,31 @@
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import {
-    View,
+    addDoc,
+    arrayUnion,
+    collection,
+    doc,
+    updateDoc,
+} from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import {
+    FlatList,
+    Modal,
+    Pressable,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    FlatList,
-    Modal,
-    StyleSheet,
-    Pressable,
+    View,
 } from "react-native";
-import React, { useContext, useEffect, useState, useCallback } from "react";
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { CartContext } from "../../components/cart/cartContext";
-import { router } from "expo-router";
-import SelectedSandwiches from "../../components/cart/SelectedSandwiches";
-import { StatusBar } from "expo-status-bar";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
-    collection,
-    addDoc,
-    doc,
-    updateDoc,
-    arrayUnion,
-} from "firebase/firestore";
-import { db, auth } from "../../firebase/firebaseConfig";
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import { CartContext } from "../../components/cart/cartContext";
+import SelectedSandwiches from "../../components/cart/SelectedSandwiches";
+import { auth, db } from "../../firebase/firebaseConfig";
 
 export default function MyBasket() {
     const [text, onChangeText] = useState("");
@@ -79,8 +79,9 @@ export default function MyBasket() {
     return (
         <KeyboardAwareScrollView
             extraScrollHeight={120}
-            style={{ flex: 1, backgroundColor: "white" }}>
-            <StatusBar style='dark' />
+            style={{ flex: 1, backgroundColor: "white" }}
+        >
+            <StatusBar style="dark" />
 
             <Text
                 style={{
@@ -91,13 +92,14 @@ export default function MyBasket() {
                     paddingTop: hp(8),
                     paddingRight: wp(8),
                     paddingBottom: hp(2),
-                }}>
+                }}
+            >
                 {basketQuantity} פריטים בסל
             </Text>
 
-            <View className='flex flex-nowrap '>
+            <View className="flex flex-nowrap ">
                 {showCart.length ? (
-                    <View className='flex justify-center'>
+                    <View className="flex justify-center">
                         <FlatList
                             scrollEnabled={false}
                             data={showCart}
@@ -105,16 +107,23 @@ export default function MyBasket() {
                                 <View
                                     style={{
                                         paddingBottom: hp(5),
-                                    }}>
+                                    }}
+                                >
                                     <SelectedSandwiches
                                         nameRef={item.name}
                                         pictureRef={item.picture}
                                         priceRef={item.price}
                                         quantityRef={(() => {
                                             let sum = 0;
-                                            item.kids.forEach((kid) => {
-                                                sum += kid.quantity;
-                                            });
+                                            // Add a check to ensure kids exists and is an array
+                                            if (
+                                                item.kids &&
+                                                Array.isArray(item.kids)
+                                            ) {
+                                                item.kids.forEach((kid) => {
+                                                    sum += kid.quantity;
+                                                });
+                                            }
                                             return sum;
                                         })()}
                                         nameKids={(() => {
@@ -136,7 +145,9 @@ export default function MyBasket() {
                             fontSize: 15,
                             fontWeight: "bold",
                             textAlign: "right",
-                        }}>
+                            paddingRight: wp(8),
+                        }}
+                    >
                         עגלה ריקה
                     </Text>
                 )}
@@ -147,14 +158,16 @@ export default function MyBasket() {
                     justifyContent: "center",
                     alignContent: "center",
                     alignItems: "center",
-                }}>
+                }}
+            >
                 <Text
                     style={{
                         left: wp(25),
                         textAlign: "right",
                         fontSize: 16,
                         paddingBottom: 2,
-                    }}>
+                    }}
+                >
                     הערות ההזמנה:
                 </Text>
                 <TextInput
@@ -182,20 +195,23 @@ export default function MyBasket() {
                 style={{
                     marginRight: wp(9),
                     marginTop: hp(2),
-                }}>
+                }}
+            >
                 <Text
                     style={{
                         textAlign: "right",
                         fontSize: 26,
                         color: "#61B331",
-                    }}>
+                    }}
+                >
                     {""} סה”כ: {total} {""}₪
                 </Text>
             </View>
             <View
                 style={{
                     alignItems: "center",
-                }}>
+                }}
+            >
                 <TouchableOpacity
                     onPress={() => {
                         setModal(true);
@@ -215,7 +231,8 @@ export default function MyBasket() {
                             height: 5,
                         },
                         top: hp(2),
-                    }}>
+                    }}
+                >
                     <Text
                         style={{
                             flex: 1,
@@ -223,12 +240,13 @@ export default function MyBasket() {
                             textAlign: "center",
                             margin: 5,
                         }}
-                        className='text-white rounded-xl p-2'>
+                        className="text-white rounded-xl p-2"
+                    >
                         לתשלום
                     </Text>
                 </TouchableOpacity>
 
-                <Modal animationType='fade' transparent={true} visible={modal}>
+                <Modal animationType="fade" transparent={true} visible={modal}>
                     <View style={styles.centeredView}>
                         <View style={styles.modal}>
                             <Text style={styles.modalText}>
@@ -236,7 +254,8 @@ export default function MyBasket() {
                             </Text>
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
-                                onPress={() => setModal(!modal)}>
+                                onPress={() => setModal(!modal)}
+                            >
                                 <Text style={styles.textStyle}>אישור</Text>
                             </Pressable>
                         </View>
@@ -248,7 +267,8 @@ export default function MyBasket() {
                     onPress={() => router.replace("menu/menu")}
                     style={{
                         top: hp(3),
-                    }}>
+                    }}
+                >
                     <Text
                         style={{
                             flex: 1,
@@ -256,7 +276,8 @@ export default function MyBasket() {
                             textAlign: "center",
                             margin: 5,
                         }}
-                        className='text-blake rounded-xl p-6 underline underline-offset-1 '>
+                        className="text-blake rounded-xl p-6 underline underline-offset-1 "
+                    >
                         חזרה לתפריט
                     </Text>
                 </TouchableOpacity>

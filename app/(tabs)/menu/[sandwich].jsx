@@ -262,7 +262,7 @@ export default function Sandwich() {
 
                     {ingredientsRef.map((ingredient, index) => (
                         <View
-                            className=" flex lex flex-row"
+                            className=" flex flex-row"
                             key={index}
                             style={{
                                 padding: wp(2),
@@ -286,12 +286,11 @@ export default function Sandwich() {
                             </View>
                             <View
                                 style={{
-                                    padding: wp(2),
-                                    right: wp(35),
+                                    right: wp(34),
                                 }}
                             >
                                 <Text
-                                    className="text-neutral-700 pr-4"
+                                    className="text-neutral-700 pr-2"
                                     style={{ fontSize: 20 }}
                                 >
                                     {"ללא " + ingredient + "."}
@@ -420,13 +419,18 @@ export default function Sandwich() {
                                             style={{ marginRight: 15 }}
                                         >
                                             <AntDesign
-                                                name="minuscircleo"
+                                                name="minus-circle"
                                                 size={24}
                                                 color="#61B331"
                                             />
                                         </Pressable>
                                         <View>
-                                            <Text style={{ paddingTop: 4 }}>
+                                            <Text
+                                                style={{
+                                                    paddingTop: 4,
+                                                    justifyContent: "center",
+                                                }}
+                                            >
                                                 {dishCounts[item[0]] || 0}
                                             </Text>
                                         </View>
@@ -443,18 +447,20 @@ export default function Sandwich() {
                                             style={{ marginLeft: 15 }}
                                         >
                                             <AntDesign
-                                                name="pluscircleo"
+                                                name="plus-circle"
                                                 size={24}
                                                 color="#61B331"
                                             />
                                         </Pressable>
                                     </View>
 
-                                    <View>
+                                    <View
+                                        style={{
+                                            paddingLeft: wp(6),
+                                        }}
+                                    >
                                         <Text
                                             style={{
-                                                textAlign: "right",
-                                                paddingRight: 30,
                                                 fontSize: hp(1.8),
                                             }}
                                         >

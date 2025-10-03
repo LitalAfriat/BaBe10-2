@@ -1,33 +1,32 @@
+import Checkbox from "expo-checkbox";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import {
-    View,
+    addDoc,
+    arrayUnion,
+    collection,
+    doc,
+    getDocs,
+    updateDoc,
+} from "firebase/firestore";
+import { useCallback, useEffect, useState } from "react";
+import {
+    Alert,
+    Image,
     Text,
     TextInput,
     TouchableOpacity,
-    Image,
-    Alert,
+    View,
 } from "react-native";
-import React, { useEffect, useState, useRef, useCallback } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { StatusBar } from "expo-status-bar";
 import {
-    widthPercentageToDP as wp,
     heightPercentageToDP as hp,
+    widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import ArrowBack from "../../../components/ArrowBack";
-import Checkbox from "expo-checkbox";
 import SchoolsList from "../../../components/kids/SchoolsList";
-import { db, auth } from "../../../firebase/firebaseConfig";
-import {
-    getDocs,
-    addDoc,
-    collection,
-    updateDoc,
-    doc,
-    arrayUnion,
-    getDoc,
-} from "firebase/firestore";
-import { router } from "expo-router";
 import Loading from "../../../components/Loading";
+import { auth, db } from "../../../firebase/firebaseConfig";
 
 export default function AddChild() {
     const [nameRef, setNameRef] = useState("");
@@ -87,16 +86,6 @@ export default function AddChild() {
             return;
         }
 
-        // TODO: LITAL FIX THIS
-        // Check for allowed characters
-        // const allowedCharacters = /^[a-zA-Z\s'-]+$/;
-        // if (!allowedCharacters.test(nameRef.current && lastNameRef)) {
-        //     Alert.alert(
-        //         " שם/שם משפחה  יכול להכיל רק אותיות ,רווחים ונקודות"
-        //     );
-        //     return;
-        // }
-
         const currentUser = auth.currentUser;
         if (currentUser.uid) {
             try {
@@ -128,26 +117,6 @@ export default function AddChild() {
                 console.error("Error adding document: ", error);
             }
         }
-
-        // const currentMyKids = auth.currentUser;
-        // if (currentMyKids.uid) {
-        //     try {
-        //         let newKidRef = doc(
-        //             collection(db, "users", currentUser.uid, "MyKids")
-        //         );
-        //         setLoading(true);
-        //         await setDoc(newKidRef, {
-        //            key: currentKid.uid,
-
-        //         });
-        //         setLoading(false);
-        //         console.log("Document added successfully");
-        //         resetForm();
-        //         router.replace("/(tabs)/children/myChildren");
-        //     } catch (error) {
-        //         console.error("Error adding document: ", error);
-        //     }
-        // }
     };
 
     const handleCheckboxChange = (value) => {
@@ -156,18 +125,20 @@ export default function AddChild() {
     };
 
     return (
-        <View style={{ flex: 1 }} className='bg-white'>
+        <View style={{ flex: 1 }} className="bg-white">
             <KeyboardAwareScrollView
                 extraScrollHeight={120}
-                style={{ flex: 1 }}>
-                <StatusBar style='dark' />
+                style={{ flex: 1 }}
+            >
+                <StatusBar style="dark" />
                 <ArrowBack backScreen={"/(tabs)/children/myChildren"} />
 
                 <View
                     style={{
                         height: hp(90),
                     }}
-                    className='flex-1 justify-center items-center z-10'>
+                    className="flex-1 justify-center items-center z-10"
+                >
                     <Image
                         style={{
                             position: "absolute",
@@ -189,25 +160,22 @@ export default function AddChild() {
                             shadowRadius: 4,
                             shadowOpacity: 0.3,
                             shadowOffset: { width: 0, height: 5 },
-                        }}>
+                        }}
+                    >
                         <View>
                             <Text
-                                className='text-right p-6'
+                                className="text-right p-6"
                                 style={{
                                     fontSize: 26,
                                     color: "#61B331",
-                                }}>
+                                }}
+                            >
                                 פרטי הילד/ה
                             </Text>
                         </View>
 
-                        <View
-                            className='gap-10 px-7  '
-                            style={{
-                                borderWidth: 2, // Sets thickness
-                                borderColor: "#FF0000",
-                            }}>
-                            <View className='flex-row'>
+                        <View className="relative gap-10 px-7  ">
+                            <View className="flex-row">
                                 <TextInput
                                     onChangeText={(value) => setNameRef(value)}
                                     style={{
@@ -216,14 +184,14 @@ export default function AddChild() {
                                         borderBottomColor: "#FFFFFF",
                                         paddingHorizontal: 10,
                                     }}
-                                    className='flex-1 font-poppins text-neutral-700 text-right '
-                                    placeholder='שם הילד/ה'
+                                    className="flex-1 font-poppins text-neutral-700 text-right "
+                                    placeholder="שם הילד/ה"
                                     placeholderTextColor={"gray"}
                                     value={nameRef}
                                 />
                             </View>
 
-                            <View className=' flex-row '>
+                            <View className=" flex-row ">
                                 <TextInput
                                     onChangeText={(value) =>
                                         setLastNameRef(value)
@@ -234,15 +202,15 @@ export default function AddChild() {
                                         borderBottomColor: "#FFFFFF",
                                         paddingHorizontal: 10,
                                     }}
-                                    className='flex-1 font-poppins text-neutral-700 text-right '
-                                    placeholder='שם משפחה'
+                                    className="flex-1 font-poppins text-neutral-700 text-right "
+                                    placeholder="שם משפחה"
                                     placeholderTextColor={"gray"}
                                     value={lastNameRef}
                                 />
                             </View>
 
-                            <View className='flex-row z-10 justify-end'>
-                                <View className='absolute'>
+                            <View className=" flex-row justify-end ">
+                                <View className=" absolute pr-1 border-4 border-purple-500">
                                     <SchoolsList
                                         schoolList={schoolList}
                                         setSelected={setSchoolRef}
@@ -252,8 +220,9 @@ export default function AddChild() {
                             </View>
 
                             <View
-                                className='flex-row'
-                                style={{ marginTop: hp(7) }}>
+                                className="border-4 border-indigo-500 flex-row "
+                                style={{ marginTop: hp(7) }}
+                            >
                                 <TextInput
                                     onChangeText={(value) => setClassRef(value)}
                                     style={{
@@ -262,33 +231,36 @@ export default function AddChild() {
                                         borderBottomColor: "#FFFFFF",
                                         paddingHorizontal: 10,
                                     }}
-                                    className='flex-1 font-poppins text-neutral-700 text-right pt-2'
-                                    placeholder='כיתה'
+                                    className=" flex-1 font-poppins text-neutral-700 text-right pt-2"
+                                    placeholder="כיתה"
                                     placeholderTextColor={"gray"}
                                     value={classRef}
                                 />
                             </View>
 
-                            <View>
+                            <View style={{ paddingRight: wp(4) }}>
                                 <Text
                                     style={{ fontSize: hp(2) }}
-                                    className='text-neutral-700  text-right'>
+                                    className="text-neutral-700  text-right "
+                                >
                                     האם יש{" "}
                                     <Text style={{ fontWeight: "bold" }}>
                                         אלרגיה למזון?
                                     </Text>{" "}
                                     סמן לא/כן
                                 </Text>
-                                <View className='flex-row justify-end pt-4'>
+                                <View className="flex-row justify-end pt-4">
                                     <View
-                                        className='flex-row'
-                                        style={{ marginRight: wp(10) }}>
+                                        className="flex-row"
+                                        style={{ marginRight: wp(10) }}
+                                    >
                                         <Text
                                             style={{
                                                 marginRight: hp(1),
                                                 fontSize: hp(2),
                                             }}
-                                            className=' text-neutral-700 '>
+                                            className=" text-neutral-700 "
+                                        >
                                             כן יש.
                                         </Text>
                                         <Checkbox
@@ -304,13 +276,14 @@ export default function AddChild() {
                                         />
                                     </View>
 
-                                    <View className=' flex-row mr-3'>
+                                    <View className=" flex-row mr-3">
                                         <Text
                                             style={{
                                                 marginRight: hp(1),
                                                 fontSize: hp(2),
                                             }}
-                                            className='text-neutral-700'>
+                                            className="text-neutral-700"
+                                        >
                                             לא אין.
                                         </Text>
                                         <Checkbox
@@ -333,12 +306,13 @@ export default function AddChild() {
                                                 fontSize: hp(2),
                                                 marginTop: hp(1),
                                             }}
-                                            className='text-neutral-700 text-right'>
+                                            className="text-neutral-700 text-right"
+                                        >
                                             יש לפרט את כלל אלרגני המזון
                                             הרלוונטים בשדה המבוקש:
                                         </Text>
 
-                                        <View className=' flex-row top-4'>
+                                        <View className=" flex-row top-4">
                                             <TextInput
                                                 onChangeText={(value) =>
                                                     setAllergiesRef(value)
@@ -350,8 +324,8 @@ export default function AddChild() {
                                                         "#FFFFFF",
                                                     paddingHorizontal: 10,
                                                 }}
-                                                className='flex-1  font-poppins text-neutral-700 text-right '
-                                                placeholder='אלרגני מזון'
+                                                className="flex-1  font-poppins text-neutral-700 text-right "
+                                                placeholder="אלרגני מזון"
                                                 placeholderTextColor={"gray"}
                                                 value={allergiesRef}
                                             />
@@ -363,7 +337,7 @@ export default function AddChild() {
                             </View>
                         </View>
                         {loading ? (
-                            <View className='flex-row justify-center'>
+                            <View className="flex-row justify-center">
                                 <Loading size={hp(19)} />
                             </View>
                         ) : (
@@ -371,12 +345,11 @@ export default function AddChild() {
                                 style={{
                                     top: checked === false ? hp(57) : hp(48),
                                 }}
-                                className='absolute left-10'>
+                                className="absolute left-10"
+                            >
                                 <TouchableOpacity
                                     onPress={registerKid}
                                     style={{
-                                        // top:
-                                        //     checked === false ? hp(57) : hp(48),
                                         height: hp(5),
                                         width: wp(35),
                                         backgroundColor: "#61B331",
@@ -385,14 +358,16 @@ export default function AddChild() {
                                         shadowRadius: 4,
                                         shadowOpacity: 0.3,
                                         shadowOffset: { width: 0, height: 5 },
-                                    }}>
+                                    }}
+                                >
                                     <Text
                                         style={{
                                             flex: 1,
                                             fontSize: hp(2.5),
                                             textAlign: "center",
                                         }}
-                                        className='text-white rounded-xl p-2'>
+                                        className="text-white rounded-xl p-2"
+                                    >
                                         הוסף
                                     </Text>
                                 </TouchableOpacity>

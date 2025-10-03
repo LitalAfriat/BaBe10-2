@@ -28,9 +28,12 @@ export const CartContextProvider = ({ children }) => {
     const getNumItems = () => {
         let numItems = 0;
         cart.forEach((itemSandwich) => {
-            itemSandwich.kids.forEach((itemKid) => {
-                numItems += itemKid.quantity;
-            });
+            // Check if kids exists and is an array before iterating
+            if (itemSandwich.kids && Array.isArray(itemSandwich.kids)) {
+                itemSandwich.kids.forEach((itemKid) => {
+                    numItems += itemKid.quantity;
+                });
+            }
         });
         return numItems;
     };
@@ -43,7 +46,8 @@ export const CartContextProvider = ({ children }) => {
                 removeFromCart,
                 getNumItems,
                 cleanCart,
-            }}>
+            }}
+        >
             {children}
         </CartContext.Provider>
     );
