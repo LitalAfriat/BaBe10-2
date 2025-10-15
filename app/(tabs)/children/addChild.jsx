@@ -210,7 +210,10 @@ export default function AddChild() {
                             </View>
 
                             <View className=" flex-row justify-end ">
-                                <View className=" absolute pr-1 border-4 border-purple-500">
+                                <View
+                                    className=" absolute pr-1 "
+                                    style={{ zIndex: 10 }}
+                                >
                                     <SchoolsList
                                         schoolList={schoolList}
                                         setSelected={setSchoolRef}
@@ -220,7 +223,7 @@ export default function AddChild() {
                             </View>
 
                             <View
-                                className="border-4 border-indigo-500 flex-row "
+                                className=" flex-row "
                                 style={{ marginTop: hp(7) }}
                             >
                                 <TextInput
